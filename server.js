@@ -5,8 +5,9 @@ var morgan=require('morgan');
 var bodyParser=require('body-parser');
 var methodOverride=require('method-override');
 
-mongoose.connect('mongodb://node:nodeuser@mongo.onmodulus.net:27017/uwO3mypu');     // connect to mongoDB database on modulus.io
-
+mongoose.connect('mongodb://test:test@apollo.modulusmongo.net:27017/ruNig7uh');     // connect to mongoDB database on modulus.io
+// mongo uri: mongodb://test:test@apollo.modulusmongo.net:27017/ruNig7uh
+// mongo console: mongo apollo.modulusmongo.net:27017/ruNig7uh -u <user> -p <pass>
 app.use(express.static(__dirname + '/public'));                 // set the static files location /public/img will be /img for users
 app.use(morgan('dev'));                                         // log every request to the console
 app.use(bodyParser.urlencoded({'extended':'true'}));            // parse application/x-www-form-urlencoded
@@ -20,6 +21,11 @@ var Todo=mongoose.model('Todo',{
 });
 
 
+app.get('*',function(req,res){
+    res.sendfile('index.html');
+});
+
+
 // listen (start app with node server.js) ======================================
 app.listen(9999);
 console.log("App listening on port 9999");
@@ -27,7 +33,7 @@ console.log("App listening on port 9999");
 // api
 // all todos
 app.get('/api/todos', function(req, res) {
-
+        console.log("get todos!!!!");
         // use mongoose to get all todos in the database
         Todo.find(function(err, todos) {
 
