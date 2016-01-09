@@ -6,6 +6,7 @@ var bodyParser=require('body-parser');
 var methodOverride=require('method-override');
 
 mongoose.connect('mongodb://localhost:27017/tododb')
+var db=mongoose.connection;
 //mongoose.connect('mongodb://test:test@apollo.modulusmongo.net:27017/ruNig7uh');     // connect to mongoDB database on modulus.io
 // mongo uri: mongodb://test:test@apollo.modulusmongo.net:27017/ruNig7uh
 // mongo console: mongo apollo.modulusmongo.net:27017/ruNig7uh -u <user> -p <pass>
@@ -18,7 +19,8 @@ app.use(methodOverride());
 
 // the model
 var Todo=mongoose.model('Todo',{
-    text:String
+    text:String,
+    complete:Boolean
 });
 
 
@@ -43,7 +45,7 @@ app.post('/api/todos', function(req, res) {
         // create a todo, information comes from AJAX request from Angular
         Todo.create({
             text : req.body.text,
-            done : false
+            complete : false
         }, function(err, todo) {
             if (err)
                 res.send(err);
@@ -55,9 +57,25 @@ app.post('/api/todos', function(req, res) {
                 res.json(todos);
             });
         });
-
     });
-
+///////////////////////////done
+app.post('/api/save/:todo_id', function(req, res) {
+        //console.log(req.params.todo_id+" save");
+        var collection=db.collection("todos");
+    
+        var isDone;
+        Todo.find({_id:req.params.todo_id},function(err,obj){
+            console.log(obj[0].complete);
+            
+            Todo.update({_id:req.params.todo_id},{
+            complete:!obj[0].complete
+        },function(err, affected, resp) {
+            console.log(resp);
+    });
+        });
+        //console.log(isDone);
+        
+});
 //remove a todo entry
 app.delete('/api/todos/:todo_id', function(req, res) {
         Todo.remove({
@@ -76,11 +94,9 @@ app.delete('/api/todos/:todo_id', function(req, res) {
     });
 
 
-
 app.get('*',function(req,res){
     res.sendfile('index.html');
 });
-
 
 // listen (start app with node server.js) ======================================
 app.listen(9999);

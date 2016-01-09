@@ -27,7 +27,20 @@ function mainController($scope, $http) {
                 console.log('Error: ' + data);
             });
     };
-
+    // check a todo and write it into DB
+    $scope.doneTodo=function(id){
+        $http.post('/api/save/'+id)
+            .success(function(data) {
+                $scope.formData = {}; // clear the form so our user is ready to enter another
+                $scope.todos = data;
+                
+            })
+            .error(function(data) {
+                console.log('Error: ' + data);
+            });
+        
+    };
+    
     // delete a todo after checking it
     $scope.deleteTodo = function(id) {
         $http.delete('/api/todos/' + id)

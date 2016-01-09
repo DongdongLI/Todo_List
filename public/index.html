@@ -19,7 +19,7 @@
 
     <!-- SPELLS -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><!-- load jquery -->
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script><!-- load angular -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.27/angular.min.js"></script><!-- load angular -->
     <script src="core.js"></script>
 
 </head>
@@ -29,7 +29,7 @@
 
         <!-- HEADER AND TODO COUNT -->
         <div class="jumbotron text-center">
-            <h1>I'm a Todo-aholic <span class="label label-info">{{ todos.length }}</span></h1>
+            <h1>Dongdong Li's Todo List <span class="label label-info">{{ todos.length }}</span></h1>
         </div>
 
         <!-- TODO LIST -->
@@ -38,8 +38,11 @@
 
                 <!-- LOOP OVER THE TODOS IN $scope.todos -->
                 <div class="checkbox" ng-repeat="todo in todos">
-                    <label>
-                        <input type="checkbox" ng-click="deleteTodo(todo._id)"> {{ todo.text }}
+                    <label  ng-if="todo.complete">
+                      <input type="checkbox" checked ng-click="doneTodo(todo._id)"> {{ todo.text }}
+                    </label>
+                    <label  ng-if="!todo.complete">
+                      <input type="checkbox" unchecked ng-click="doneTodo(todo._id)"> {{ todo.text }}
                     </label>
                 </div>
 
