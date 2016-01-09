@@ -44,6 +44,10 @@
                     <label  ng-if="!todo.complete">
                       <input type="checkbox" unchecked ng-click="doneTodo(todo._id)"> {{ todo.text }}
                     </label>
+                    
+                    <label>
+                        <input type="button" value="Delete" ng-click="deleteTodo(todo._id)">
+                    </label>
                 </div>
 
             </div>
